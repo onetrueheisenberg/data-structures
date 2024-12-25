@@ -1,0 +1,57 @@
+class HashTable {
+    constructor(size = 7) {
+        this.dataMap = new Array(size);
+    }
+
+    _hash(key) {
+        let hash = 0;
+        for ( let i = 0; i < key.length; i++ ) {
+            hash = ( hash + key.charCodeAt(i) * 23 ) % this.dataMap.length;
+        }
+        return hash;
+    }
+
+    set(key, value) {
+        let index = this._hash(key);
+        if ( !this.dataMap[index] ) {
+            this.dataMap[index] = [];
+        }
+        this.dataMap[index].push([key, value]);
+        return this;
+    }
+
+    get(key) {
+        const index = this._hash(key);
+        if ( index >= this.dataMap.length ) return undefined;
+        if ( !this.dataMap[index] ) return undefined;
+        for ( let i = 0; i < this.dataMap[index].length; i++ ) {
+            if ( this.dataMap[index][i][0] === key ) return this.dataMap[index][i][1];
+        }
+        return undefined;
+    }
+
+    keySet() {
+        let allKeys = [];
+        this.dataMap.forEach(element => {
+            if ( element.length > 0 ) {
+                element.forEach(entry => {
+                    allKeys.push(entry[0]);
+                });
+            }
+        });
+        return allKeys;
+    }
+
+}
+
+function test() {
+    let ht = new HashTable();
+    ht.set('bolts', 1400);
+    ht.set('washers', 50);
+    ht.set('lumber', 10);
+    ht.get('lumber');
+    console.log(ht.keySet());
+    console.log(ht);
+}
+
+test();

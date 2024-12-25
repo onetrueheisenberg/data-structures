@@ -1,0 +1,60 @@
+class Graph {
+    constructor() {
+        this.adjacencyList = {};
+    }
+
+    addVertex(value) {
+        if ( !this.adjacencyList[value] ) {
+            this.adjacencyList[value] = [];
+            return true;
+        }
+        return false;
+    }
+
+    addEdge(vertexA, vertexB) {
+        if ( this.adjacencyList[vertexA] && this.adjacencyList[vertexB] ) {
+            this.adjacencyList[vertexA].push(vertexB);
+            this.adjacencyList[vertexB].push(vertexA);
+            return true;
+        }
+        return false;
+    }
+
+    removeEdge(vertexA, vertexB) {
+        if ( this.adjacencyList[vertexA] && this.adjacencyList[vertexB] ) {
+            this.adjacencyList[vertexA] = this.adjacencyList[vertexA].filter(element => element !== vertexB);
+            this.adjacencyList[vertexB] = this.adjacencyList[vertexB].filter(element => element !== vertexA);
+            return true;
+        }
+        return false;
+    }
+
+    removeVertex(value) {
+        if ( !this.adjacencyList[value] ) return undefined;
+        while ( this.adjacencyList[value].length > 0 ) {
+            let temp = this.adjacencyList[value].pop();
+            this.removeEdge(value, temp);
+        }
+        delete this.adjacencyList[value];
+    }
+
+}
+
+function test() {
+    let graph = new Graph();
+    graph.addVertex("A");
+    graph.addVertex("B");
+    graph.addVertex("C");
+    graph.addVertex("D");
+    graph.addEdge("A", "B");
+    graph.addEdge("A", "C");
+    graph.addEdge("B", "C");
+    graph.addEdge("A", "D");
+    graph.addEdge("B", "D");
+    graph.addEdge("C", "D");
+    graph.removeEdge("A", "B");
+    graph.removeVertex("D");
+    console.log(graph);
+}
+
+test();

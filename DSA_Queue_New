@@ -1,0 +1,54 @@
+class QueueNode {
+    constructor(value) {
+        this.value = value;
+        this.next = null;
+    }
+}
+
+class Queue {
+    constructor(value) {
+        const newNode = new QueueNode(value);
+        this.first = newNode;
+        this.last = newNode;
+        this.size = 1;
+    }
+
+    enqueue(value) {
+        const newNode = new QueueNode(value);
+        if ( this.size === 0 ) {
+            this.first = newNode;
+            this.last = newNode;
+        } else {
+            this.last.next = newNode;
+            this.last = newNode;
+        }
+        this.size++;
+        return this;
+        
+    }
+
+    dequeue() {
+        let temp = this.first;
+        if ( !temp ) return undefined;
+        if ( temp.next === null ) {
+            this.first = null;
+            this.last = null;
+        } else {
+            this.first = temp.next;
+            temp.next = null;
+        }
+        this.size--;
+        return temp;
+    }
+}
+
+function test() {
+    let queue = new Queue(1);
+    queue.enqueue(10);
+    queue.enqueue(25);
+    queue.enqueue(12);
+    console.log(queue.dequeue());
+    console.log(queue);
+}
+
+test();
